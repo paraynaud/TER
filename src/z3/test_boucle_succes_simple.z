@@ -1,0 +1,83 @@
+(set-option :produce-unsat-cores true)
+(declare-fun P1 (Int ) Bool)
+(declare-fun P2 (Int ) Bool)    
+(declare-fun P3 (Int ) Bool)
+(declare-fun P4 (Int ) Bool)  
+
+(define-fun post ((x1 Int)) Bool
+	 (= x1 3) 
+)
+
+(define-fun pre ((x1 Int)) Bool
+	 (and (<= -5 x1) (<= x1 5) )
+   ;true
+)
+
+
+
+
+(assert (!
+   (forall ((x Int) )
+     (=>
+        (pre x)
+        (P1 x)
+     )
+   )
+  :named P1_c)
+)
+
+(assert(!
+   (forall ((x1 Int))
+       (=> 
+         (and 
+            ( <= x1 -1 )
+            (P1 x1)           
+         )
+         (P2 3) 
+       )
+   )   
+  :named P2_t)     
+)  
+ 
+(assert(!
+   (forall ((x1 Int))
+       (=> 
+         (and 
+            (not ( <= x1 -1 ) )
+            (P1 x1)           
+         )
+         (P3 3) 
+       )
+   )   
+  :named P2_f)     
+ )  
+
+(assert 
+  (forall ( (x Int)) 
+    (=>
+      (P2 x)
+      (P4 x)
+    )   
+  )
+)  
+
+(assert 
+  (forall ( (x Int)) 
+    (=>
+      (P3 x)
+      (P1 x)
+    )   
+  )
+)  
+(assert 
+  (forall ( (x Int)) 
+    (=> 
+      (P4 x) 
+      (post x)
+    )
+  )
+)
+
+(check-sat)
+(get-model)
+;(get-unsat-core)
