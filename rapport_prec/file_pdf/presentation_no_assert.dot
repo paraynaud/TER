@@ -1,0 +1,27 @@
+digraph cfg{
+size="8,8!"edge [dir=one, color=red, style=filled,fontcolor=black, penwidth=1] ;
+node [shape=box, color=red, fontcolor=red] ; 
+ f_entry_56_3[color=red,label= "entry_point_56" ];
+ node [shape=circle, fontsize=10, peripheries=1, color=blue, fontcolor=blue] ; 
+ f_entry_56_3 -> fi_56_n_3;
+edge [dir=one, color=black, style=filled,fontcolor=black, penwidth=1] ;
+fi_56_n_3 -> fi_56_n_2 [label="    3:	x3 = x2 + x1 + 0 (int)"]; 
+fi_56_n_2 -> fi_56_n_1 [label="    2:	x4 = x3"]; 
+
+edge [dir=one, color=red, style=filled,fontcolor=black, penwidth=1] ;
+node [shape=box, color=red, fontcolor=red] ; 
+ f_entry_57_9[color=red,label= "entry_point_57" ];
+ node [shape=circle, fontsize=10, peripheries=1, color=blue, fontcolor=blue] ; 
+ f_entry_57_9 -> fi_57_n_9;
+edge [dir=one, color=black, style=filled,fontcolor=black, penwidth=1] ;
+fi_57_n_9 -> fi_57_n_8 [label="    9:	x3 = 5"]; 
+fi_57_n_8 -> fi_57_n_7 [label="    8:	x2 = 3"]; 
+fi_57_n_7 -> fi_57_n_6 [label="    7:	x1 = $56(x3, x2)"]; 
+fi_57_n_6 -> fi_57_n_4 [label=" x1 <s x3 "]; 
+fi_57_n_6 -> fi_57_n_5 [label="non( x1 <s x3 )"]; 
+fi_57_n_5 -> fi_57_n_3 [label="    5:	x2 = x2 + 1 (int)	goto 3"]; 
+fi_57_n_4 -> fi_57_n_3 [label="    4:	x2 = (- x2)"]; 
+fi_57_n_3 -> fi_57_n_1 [label="    3:	x4 = 0	goto 1"]; 
+fi_57_n_2 -> fi_57_n_1 [label="    2:	x4 = 0"]; 
+
+ }

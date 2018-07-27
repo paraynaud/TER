@@ -1,0 +1,14 @@
+digraph cfg{
+size="8,8!"edge [dir=one, color=red, style=filled,fontcolor=black, penwidth=1] ;
+node [shape=box, color=red, fontcolor=red] ; 
+ f_entry_54_5[color=red,label= "entry_point_54" ];
+ node [shape=circle, fontsize=10, peripheries=1, color=blue, fontcolor=blue] ; 
+ f_entry_54_5 -> fi_54_n_5;
+edge [dir=one, color=black, style=filled,fontcolor=black, penwidth=1] ;
+fi_54_n_5 -> fi_54_n_4 [label="    5:	x1 = 3"]; 
+fi_54_n_4 -> fi_54_n_2 [label=" x1 ==s 6 "]; 
+fi_54_n_4 -> fi_54_n_3 [label="non( x1 ==s 6 )"]; 
+fi_54_n_3 -> fi_54_n_2 [label="    3:	x1 = 6"]; 
+fi_54_n_2 -> fi_54_n_1 [label="    2:	x2 = 0"]; 
+
+ }

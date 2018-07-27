@@ -1,0 +1,18 @@
+digraph cfg{
+size="8,8!"edge [dir=one, color=red, style=filled,fontcolor=black, penwidth=1] ;
+node [shape=box, color=red, fontcolor=red] ; 
+ f_entry_57_9[color=red,label= "entry_point_57" ];
+ node [shape=circle, fontsize=10, peripheries=1, color=blue, fontcolor=blue] ; 
+ f_entry_57_9 -> fi_57_n_9;
+edge [dir=one, color=black, style=filled,fontcolor=black, penwidth=1] ;
+fi_57_n_9 -> fi_57_n_8 [label="    9:	x4 = x2"]; 
+fi_57_n_8 -> fi_57_n_7 [label="    8:	x3 = x1"]; 
+fi_57_n_7 -> fi_57_n_6 [label="    7:	nop"]; 
+fi_57_n_6 -> fi_57_n_5 [label=" x4 <s x3 "]; 
+fi_57_n_6 -> fi_57_n_2 [label="non( x4 <s x3 )"]; 
+fi_57_n_5 -> fi_57_n_4 [label="    5:	x4 = x4 + 1 (int)"]; 
+fi_57_n_4 -> fi_57_n_3 [label="    4:	x3 = x3 + -1 (int)"]; 
+fi_57_n_3 -> fi_57_n_6 [label="    3:	goto 6"]; 
+fi_57_n_2 -> fi_57_n_1 [label="    2:	x5 = 0"]; 
+
+ }

@@ -1,0 +1,11 @@
+digraph cfg{
+size="8,8!"
+ node [shape=circle, fontsize=10, peripheries=1, color=blue, fontcolor=blue] ; 
+edge [dir=one, color=black, style=filled,fontcolor=black, penwidth=1] ;
+fi_54_n_5 -> fi_54_n_4 [label="    5:	x1 = 3"]; 
+fi_54_n_4 -> fi_54_n_2 [label=" x1 ==s 6 "]; 
+fi_54_n_4 -> fi_54_n_3 [label="non( x1 ==s 6 )"]; 
+fi_54_n_3 -> fi_54_n_2 [label="    3:	x1 = 6"]; 
+node [shape=box, color=purple, fontcolor=purple];
+
+ }
