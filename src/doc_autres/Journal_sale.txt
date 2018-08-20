@@ -1,0 +1,288 @@
+26/3/18
+	aujourd'hui j'ai parlé avec Mr Perrin a propos de comment recuperer le cfg
+	puis nous avons vu avec cyril comment les details(lecture donnée pendant la cupure réseau)
+	nous en somme arivés a la conclusion que je devrai faire un pretty des de rtl
+	reinstallation de compcert pour avoir les librairies disponible 
+	ecriture d'un premer script de test
+	debut de la reecriture de PrintRTL.ml
+	premier commit local
+
+29/03/18
+	amélioration du script de make_test
+	utilisation de gitlab beaucoup de lecture sur le code et la doc RTL 
+	des debuts de resultats dans l'afficahge mais des difficultés a comprendre le code
+	par exemple :
+		| Iop(op, args, res, s) ->
+		      fprintf pp "Iop %a = %a\n ;"
+			 reg res (PrintOp.print_operation reg) (op, args);
+		je comprend que PrintOp.print_operation reg) (op, args); affiche de bonne manière dans un code presque assembleur les opérations et registres associés, mais je ne comprend pas ou cela est défini 
+	je ne sais par ailleur pas comment faire pour réaliser quelque chose comme :
+		-| Iop(op, args, res, s) -> fprintf pp "Iop(%?,%?,%?,%%)" fonction? op fonction? args fonction? res fonction? s
+
+
+// a regarder dans extraction AST.ml, RTL.ml, Datatypes.ml
+
+
+05/04/18
+
+	- création du script lancement_doc_important regroupant tous les documents necssaire à l'écriture du code.
+	- début de résultat dans le print du code caml
+	- problème de reecriture de PrintOp dois je tout reecrire les print de chaque opération condition??
+	- besoin de définir une stratégie pour recopier le code de manière efficace. fichier PrintOp.ml dans CompCert/x86
+	- je pense qu'il va falloir réécrire tout le fichier pour afficher le code caml des opérations/conditions	
+
+09/04/18
+	- journée a chercher une fonction de l'interpreteur qui n'existe pas telle quelle, journée dans le vent si je puis dire
+	- du coup navigation dans le code de compcert
+
+12/04/18
+	utilisation de ppx_deriving.show
+	
+
+7/05/18:
+	&er jour de stage on doit se remettre dedans
+	on se rend compte que les fichiers .ml que je dois modifié dont produit par compcert a partir de .mll
+	il faut modifier le makefile et la c'est la catastrophe
+	je n'arrive pas a rjouter un repertoire dans la compilation ou nous aurions déja mis les fichier modifié qui ne serait pas recréés par un make all, il faudrait ensuite les remplacer dans le dossier extraction
+	
+
+	Demain a essayer compiler normal faire la liste des fichier a modifier, les modifier et ensuite mettre tout ca dans un dossier non toucher par make clean ensuite essayer de modifier le makefile de manière a recopier ce fichier de force dans extraction (evidemment il ne faut pas que compcert bouge entretemps).
+ 
+	attention au ficier, definition de modules et signatures :
+	-  Int0, Integer.ml, Maps.ml, Orders.ml, OrdersAlt.ml
+
+14/05/18
+	Mr perrin m'a bien avancé
+	nous ne remplacons pas seulement les fichiers apres la compilation nous les remplacons avant leurs compilations ils sont ensuite compilés avec les bonnes option ce qui nous permet de plus avoir de problème avec les .cmi, codage de test et verification de la bone tenue du makefile
+
+
+15/05/18
+	bon avancée dans le makefile on trouve le bon endroit pour tout faire, on fait notre propre compilation des .mli .cmi tout ce passe bien avec les fichiers de base , mais cela ce corce quand nous arrivons a Maps et AST ca bloque pour des erreur peu clairs(pour moi)
+
+16/05/18
+	matinée peu efficace, a part le vimtutor, car je me suis perdu en essayant de resoudre une erreur en modifiant un type(suppr d'un sous-type). Ce qui a entrainé des erreurs de compilation a chaque fois que ce type en question était appelé, j'avais alors besoin de modifié le script et de faire des recopie dans les repertoire adequat (voir le repertoire modfi_fichier_mld avec un .readme dedans pour se rapperler).
+	Bref dans l'apres midi j'ai arreté d'aller dans cette voie et j'ai réalisé a quelle point l'erreur était stupide il suffisait de remplacer un float par Floats.float le compilateur pensait que le type devait etre un float un classique mais mettre un Floats.float suffisait a lui faire comprendre (j'ai eu du coup l'impression d'avoir perdu des heures sur qqchose de con)
+	Après avoir corriger cela et les petites erreurs qui ont suivi j'ai enfin pu afficher ce que nous voulions (voir CompCert/resultat_rtl_paulo ) j'ai fait 2 afficahge possible l'un affichant directement le program, l'autre affichant seulement les instruction cependant l'affichage n'est pas tout a fait celui que j'avais anticipé, j'éspère que Mr. Perrin l'avait lui un peu plus anticipé.
+	n'ayant plus trop le temps de faire grand chose j'ai seulement ecris un .readme dans CompCert/LIEN_AFFICHAGE .
+
+
+
+17/05/18 anniversaire de ma maman deja
+
+	-Reussite pour faire le lien entre un fichier sorti et ledit ocaml
+	- continuation de vimtutor -> 4.3
+	- seminaire
+	-debut de transforamtion de l'arbre récupéré
+		lu
+
+
+18/05/18 
+matin:
+	-je me suis battu avec mon script pour que ledit ocaml comprenne les fichiers que je souhaitais utilisé, il comprenait spontanement la structure que je lui donné (complexe utilisant beaucoup de modules) mais il ne comprenait pas un AST.ident ...
+aprem:
+	-on se remet au caml j'avais du mal comprendre comme étaient utilisé les types enregistrement dans les fonctions j'ai donc fais plusieurs test pour mieux comprendre
+
+
+22/05/18
+matin: developpement du printer pour avoir un resultat ressemblant a quelque
+	 chose, le printer en developpement est un peu similaire au printer qui 
+	est déja sur compcert mais on a une meilleur vision du programme. 
+aprem : 
+	toujours sur le developpement du printer mais je me suis heurté a 
+	quelque problème de typage notamment avec le module PTree.
+
+
+23/05/18;
+	je n'ai pas vu Mr Perrin aujd du coup je n'ai pas pu avancé, je dois 
+le voir avancer car je ne sais pas précisemment quoi faire, j'ai developpé le 
+printer de programme que j'ai extrait de compcert, cependant une grosse partie 
+du programme concerne des fonctions externe dont le PrintRTL original ne tenait 
+pas compte, se pose la question de si nous souhaitons la garder ou nous.
+	D'autres aprts nous pourrions utiliser le second printer de PrintRTL (print_instruction) qui nous affiche directement les noeuds.
+	La question que je me pose est la suivante, dois-je recréer une nouvelle
+structure en remplacant les BinNums, qui ne sont pas pratique par des int. 
+-> mais je pense que cela implique de reecrire pas mal de code, c'est pour cette raison que j'avais besoin de voir Mr. Perrin
+-> de plus je dois le voir pour le rapport de stage savoir ce que je dois mettre dedans.
+Demain j'ai absoluement besoin de voir Perrin pour avancer
+
+
+24/05/18:
+	JH'ai finalement vu Mr Perrin un bon bout de temps pendant la matinée, o
+n a mis les choses au clair, comment nous allions modéliser le cfg ect...
+Grace a cela j'ai pu bien avancé cet aprem, il n'y a pas encore le cfg  mais on pas en etre bien loin il faudrait également que j'arrive a récupere les 
+identificateurs des fonctions pour faire plusieur graphe.
+
+25/05/18:
+	Je fais le resumé le lundi 28, mais grosso modo j'ai fini la structure, 
+j'ai fais une pretty printer pour le graphe (vite fait), cependant il y a des 
+problèmes, chaque fonction devrait posséder un graphe, sauf que les graphes 
+ont des "malformation"
+	Et je n'ai toujours pas réussi a compiler avec les .cmo, j'arrive quand même a récuperer les types cependant pour avvoir les show_... cela pose plus de problèmes.
+
+
+28/05/18:
+	J'ai enfin réussi a pourvoir utiliser les show_... dans mes fichiers .ml
+et pour cela j'ai du créer une librairie dans le repertoire 
+fichier_mld/test_ledit (actuellement) dans le lequel j'ai mis tous les bons .cmo
+ .cmi comme ca pas de contradictions sur les interfaces : car j'avais un 
+problème avant les .cmi que je compiler étaient créés dans extraction.mli2 et 
+dans src_modif du coup cela créé 2 .cmi par fichier et il y abait des 
+contradictions bref, au final j'ai fais ma librairie (lib_cfg.cma) puis j'appel
+ledit ocaml (si je suis déja dans le bon repertoire sinon il faut mettre -I)
+puis :
+	#use "topfind";;
+	#require "ppx_deriving_show" ;;(qui lui apporte le ppx_deriving_runtime 
+qui me poser problème pour mettre les .cmo )
+	#load "lib_cfg.cma";;
+... les fichiers que je veux dans le lequel je peux utiliser les show ect...
+
+note : le script qui fait la librairie est script_cma
+ 
+
+attention completeter apres le exit dans le script copie_dev
+
+dautre part le show_instruction afficher avec des esspace et le .dot aime pas trop ca
+
+29/05/18
+
+	j'ai finalement réglé le problème des noeuds quin'avait pas de sens, il fallait trier l'arbre, le noeuds des instructions n'étaient pas les neouds de l'arbre, et j'ai fait un premier printer de graphe(fais le 30/05/18)
+	j'ai aussi recoder le printer car il ne passait pas a l'echelle avec de plus gros programme (aes.c)
+
+
+30/05/18
+
+	j'ai fais un meillur printer bien plus clair (qui prend les gros
+ programmes aussi), met les instructions dans des boxs rattacher a chaque noeud, les noeuds sont identifié par leur fonction et numéro , j'ai fais les conditions mais pas les labels.
+	l'aprem j'ai commencé a faire le compte rendu de stage, a regarder latex,et ecrire quelques trucs. mais je sais pas encore ce que je vais mettre en plan
+Tout ca est dans le repertoire DEFENSE et le fichier que je dois modifier en 
+latex est dans DEFENSE/template/LaTeX-7/template.pdf
+ 
+
+13/06/18:
+	on est mercredi et j'ai passé mon oral lundi, j'ai commencé a regarder
+comment transmettre des propriétés mais actuellement je suis bloqué par des
+problèmes d'implémentation.
+	jarrive pas a utiliser un ocaml pour vim
+	il faut que je lise les documents que Perin m'a envoyé.
+
+aujd ce que j'ai fais:
+	j'ai fini de codé la recuperation des derniers neouds de chaque
+fonctions, cependant après l'avoir réalisé je me suis rendu compte qu'arrivé a
+la représentation RTL il  n'y a plus qu'un seul return par fonction, le return
+ne pouvant renvoyer qu'une variable stocké dans un registre, enfonction des
+différents return il stocke la valeur associé a chaque return dans un
+repertoire spécifique disons x, et apres l'affection, il y a un goto return
+rx.
+
+	if (c) then return 5
+		else return 6
+	return 8 
+
+donne grosso modo
+5	if c  
+4		then rx = 5 goto 1
+3		else rx = 6 goto 1
+2	rx = 8 goto 1
+1 	return rx .
+
+je me suis aussi rendu compte que mon code n'était pas propre et coder chaque
+fonction d'un changement de structure reviens a tout recoder je vais donc lire
+des trucs sur la programmtion en caml (cf triplet cfg quadruplet cfg, la je
+dois modifier le type cfg et ca nique tout).
+
+Continuer a regarder pour les modules je dois passer par la pour ecrire un
+code propre 
+
+14/06/18:
+	Bon ben je me suis cassé l cul a aprrendre les modules cependant il y
+avait bien des classes en caml. Mais pour rester dans le même ordre d'idée que
+Compcert j'étais parti avec les modules mais il me manque encore de la liberté
+d'utilisation.
+
+
+15/06/18
+	aujd j'ai regardé les calsses en Ocaml, ca m'a pas plus c'était chiant
+et j'ai eu l'impression d'avoir rien fait de la semaine a regarder les modules
+pour rien, bref j'ai décidé d'arrếter les types énuméré, j'ai défini des
+essais dans n_uplet.ml, avec un résultat concluant sur l'appel de la meme
+methode sur un triplet et un quadruplet.
+
+
+19/06/18 lundi (hier) j'ai vu Perin, au final je passe sur un code de classe
+
+apres avoir developpé des class rep (triplet quadruplet) et cfg (cfg4 cfg5) je
+me suis rendu compte qu'au final c'était quand meme chiant a deboguer, surtout
+apres que me machine est bien planté
+-Du coup je suis repassé sur les triplets dans le repertoir orginal
+
+22/06/18 
+	bon cette semaine je suis passé au classe pour repasser au caml
+classique, mardi mercredi j'ai developpé un printer, mercredi jeudi
+(synchrothron) et vendredi j'ai bien regardé Z3, j'ai identifié des problèmes,
+je les ai noté sur les petites feuilles blanches, notamment la declaration des
+types de la fonction, et le changement de variables d'une propriété a l'autre.
+Lunid matin il faut que je reregarde tout ca pour proposer qqchose a Perin et
+qu'il valide.
+Il faudra egalement penser aux appels de fonctions tq noeud call => precond de
+la fonction et post cond de la fonction implique le noeud suivant. definier
+aussi clairement la grammaire des formules de Hoare et discuter du passage en
+clauses de Horn, c'est expliqué dans un des papiers.
+
+
+25/06/18:
+
+	Aujd j'ai bien charbonne j'ai fais un affichage correct des
+variables, et un transfert des variables d'une propriété à une autre
+Il faut maintenant faire les declarations des constantes et des fonctions.
+
+je me suis arrete a la recherche dichotomique sur la structure que j'ai mis en
+place, il faudra créer le "placer" pour tester le tri dichotomique
+
+
+26/06/18
+	aujd petite journée je devais faire les insciprtions de smaster le
+matin, puis la recherche dicotomique m'a ecore cassé les couilles il faudra la
+teminer demain.
+
+
+02/06/18 : 
+	regarder le fichier test et verfifer la recherche dichotmique sur le
+denier bout de table.
+
+
+3/06/18 
+	plutot nien avancé encore aujd, mais il y aune couille quand je passe
+a l'homogéneisation des signatures regarder test.ml
+
+4/06/18 
+
+	bon aujd je ne suis pas venu le matin mais j'ai été productiof cet
+apres midi, j'ai fini l'homogeneisation locale et j'ai fais la globale direct
+après, resultat prositif ca marche seulement ca a soulvé un autre problème,
+certaines variables sont des paramètre voir l'exemple, et pour ces paramètres
+je dois aller récupérer les types dans la signature de la fonction,
+information que je n'avais pas trouvé pertinente dans le cfg, et qui par
+conséquent n'y figure pas, j'ai donc commencé par modifier le type cfg dans un
+fichier test independant, et j'attend de voir ce que cela donne, je devrais
+peut d'ailleurs plus me servir de git a ce sujet. il faut donc continuer a
+propager ces signature pour recuperer facile les types des paramètres.
+
+
+5/06/18
+	Bon encore bien avancé ajd, j'ai fini les signatures completement avec
+l'ajout du type T (pour tableau) permettant la reconnaissances des variable
+qui n'était pas type lorsqu'il s'agissait de tableau car les tableaux sont
+gérés par les load et store.
+J'ai également recommencé le generateur de propriété logique car le précédent
+avait un problème, il faudra également refaire le printer en fonction des
+signature attention!!!!
+
+6/07/18 (j em etait tompe dans les date precedentes on est en juillet)
+	regarder le printer ver Z3 et le continuer pense a merge aussi une
+fois que ce sera fini
+
+9/07/18
+
+j'ai continué le printer j'arrive a peu pres a faire une sortie pour Z3
+cependant il faut faire le lien avec la structure des signatures mtn pour
+transformer automatiquement les types.
