@@ -286,3 +286,6 @@ fois que ce sera fini
 j'ai continué le printer j'arrive a peu pres a faire une sortie pour Z3
 cependant il faut faire le lien avec la structure des signatures mtn pour
 transformer automatiquement les types.
+
+
+Par la suite j'ai essayé de généré les bonnes formules pour Z3, cependant ca n'a pas vraiment marché, et nous avons un debut de réponse quand Mr Perin est venu le vendredi final une aprem avec moi. J'ai détaillé un fichier de Z3 "milieu". Le problème étant que Z3 renvoyé des chose incohérente ou bien ne terminait pas. Il ne terminait pas car on donnait des mauvaises préconditions ( ou trop importante).
