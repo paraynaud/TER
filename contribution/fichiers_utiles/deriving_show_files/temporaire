@@ -1,0 +1,36 @@
+Op.ml:| Aglobal of ident * Ptrofs.int
+Op.ml:| Abased of ident * Ptrofs.int
+Op.ml:| Abasedscaled of coq_Z * ident * Ptrofs.int
+Op.ml:| Oindirectsymbol of ident
+Op.ml:       if ident_eq x0 i1 then Ptrofs.eq_dec x1 i2 else false
+Op.ml:       if ident_eq x0 i1 then Ptrofs.eq_dec x1 i2 else false
+Op.ml:       then if ident_eq x1 i1 then Ptrofs.eq_dec x2 i2 else false
+Op.ml:     | Oindirectsymbol id0 -> (fun x -> x) (ident_eq id id0)
+Op.ml:(** val globals_addressing : addressing -> ident list **)
+Op.ml:(** val globals_operation : operation -> ident list **)
+RTL.ml:| Icall of signature * (reg, ident) sum * reg list * reg * node
+RTL.ml:| Itailcall of signature * (reg, ident) sum * reg list
+Camlcoq.ml:let first_unused_ident () = !next_atom
+AST.ml:type ident = positive
+AST.ml:(** val ident_eq : positive -> positive -> bool **)
+AST.ml:let ident_eq =
+AST.ml:| Init_addrof of ident * Ptrofs.int
+AST.ml:type ('f, 'v) program = { prog_defs : (ident * ('f, 'v) globdef) list;
+AST.ml:                          prog_public : ident list; prog_main : ident }
+AST.ml:    ('a1, 'a2) program -> (ident * ('a1, 'a2) globdef) list **)
+AST.ml:(** val prog_public : ('a1, 'a2) program -> ident list **)
+AST.ml:(** val prog_main : ('a1, 'a2) program -> ident **)
+AST.ml:    ('a1 -> 'a2) -> (ident * ('a1, 'a3) globdef) -> ident * ('a2, 'a3) globdef **)
+AST.ml:    (ident -> 'a1 -> 'a2 res) -> ident -> 'a1 globvar -> 'a2 globvar res **)
+AST.ml:    (ident -> 'a1 -> 'a2 res) -> (ident -> 'a3 -> 'a4 res) -> (ident * ('a1,
+AST.ml:    'a3) globdef) list -> (ident * ('a2, 'a4) globdef) list res **)
+AST.ml:    (ident -> 'a1 -> 'a2 res) -> (ident -> 'a3 -> 'a4 res) -> ('a1, 'a3)
+AST.ml:| EF_debug of positive * ident * typ list
+AST.ml:       if ident_eq x0 kind0
+AST.ml:       if ident_eq x0 kind0
+AST.ml:       if ident_eq x0 kind0
+AST.ml:       then if ident_eq x1 text0 then x __ typ_eq x2 targs0 else false
+AST.ml:| BA_loadglobal of memory_chunk * ident * Ptrofs.int
+AST.ml:| BA_addrglobal of ident * Ptrofs.int
+AST.ml:(** val globals_of_builtin_arg : 'a1 builtin_arg -> ident list **)
+AST.ml:(** val globals_of_builtin_args : 'a1 builtin_arg list -> ident list **)

@@ -1,0 +1,74 @@
+(set-option :produce-unsat-cores true)
+(set-option :produce-proofs true)
+(declare-const var Int)
+(declare-const a Int)
+(declare-const b Int)
+(declare-fun P1 (Int Int) Bool)
+(declare-fun P2 (Int Int) Bool)    
+(declare-fun P3 (Int) Bool)
+(declare-fun P4 (Int) Bool)
+ 
+(define-fun pre ((x1 Int)) Bool
+	true 
+  ;(and (<= x1 2147483647) ( >= x1 -2147483648) ) ; la taille des entier codé en c
+)
+
+(define-fun post ((x1 Int) (x2 Int)) Bool
+	 (= x1 x2) 
+)
+
+
+(assert (!
+   (forall ((x Int) (y Int))
+     (=>
+        true
+        (P1 x y)
+     )
+   )
+  :named P1_c)
+)
+
+(assert(!
+     (forall ((x1 Int)(y1 Int) (x2 Int)(y2 Int))
+         (=> 
+             (P1 x1 y1)           
+             (and 
+                ( = y2 y1 )
+                ( = x2 y1)
+                ;( = x2 ( - y1 1))
+                (P2 x2 y2) )
+         )
+       )       
+   :named P2_c)     
+)  
+
+
+;(assert (! 
+;  (and
+ ;  (=> (P2 a b ) (not (post a b)) )
+;    (P2 a b)
+;   (not (post a b))
+;  )  
+;  :named P4_c)
+;)
+
+(assert 
+  (forall ( (x Int) (y Int)) 
+    (=> 
+      (P2 x y) 
+      (post x y)
+    )
+  )
+)
+
+;(assert
+ ; (=> (and (P1 a ) (= b 0)) (not (post b)) )
+;)  
+
+
+
+
+(check-sat)
+(get-model)
+(get-unsat-core)
+(get-proof)

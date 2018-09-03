@@ -1,0 +1,46 @@
+(set-option :produce-unsat-cores true)
+(set-option :produce-proofs true)
+(set-logic HORN)
+(declare-fun P1 (Int) Bool)
+(declare-fun P2 (Int) Bool)
+
+(assert 
+  (forall ((x Int))
+    (=>
+      (<= 0 x)
+      (P1 x)
+    )
+  )
+)
+
+(assert(!
+  (forall ((x Int) (y Int) )
+    (=>
+      (and  
+        (P1 x)
+        (= y (+ x 1))
+      )
+       (P2 y )     
+    )
+  )
+  :named prog)
+)
+
+
+
+(assert (!
+  (forall ((x Int ))
+    (=>
+     (P2 x)
+     (<= 2 x) 
+    )   
+  )
+  :named final)
+)
+
+
+
+(check-sat)
+(get-model)
+(get-proof)
+
